@@ -39,4 +39,12 @@ function my_query_by_post_meta( $query ) {
 }
 add_action( 'elementor/query/project_list', 'my_query_by_post_meta' );
 
+//function to show admin bar only administrator users
+function remove_admin_bar(){
+	if (!current_user_can('administrator') && !is_admin()) {
+  		show_admin_bar(false);
+	}
+}
+
+add_action('after_setup_theme', 'remove_admin_bar');
 
