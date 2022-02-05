@@ -17,3 +17,26 @@ function change_login_logo()
 add_action("login_head", "change_login_logo");
 
 
+//specific query using a custom id created in the elementor plugin
+function my_query_by_post_meta( $query ) {
+	
+	$current_user = wp_get_current_user();
+ 
+	$meta_query = $query->get( 'meta_query' );
+
+	if ( ! $meta_query ) {
+		$meta_query = [];
+	}
+
+	$meta_query[] = [
+		'key' => 'email',
+		'value' => $current_user->user_email,
+		'compare' => 'in',
+	];
+
+	$query->set( 'meta_query', $meta_query );
+
+}
+add_action( 'elementor/query/project_list', 'my_query_by_post_meta' );
+
+
